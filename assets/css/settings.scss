@@ -1425,6 +1425,10 @@ body {
 							height: 38px;
 						}
 
+						textarea {
+							min-width: 100% !important;
+						}
+
 						.user_registration_send_email_test {
 							width: 10%;
 						}
