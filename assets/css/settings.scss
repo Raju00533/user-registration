@@ -1708,6 +1708,32 @@ body {
 				}
 			}
 		}
+
+		#popups-list {
+			.ur-list-table-wrapper {
+				width: 100%;
+				overflow-x: auto;
+
+				.wp-list-table {
+					width: 100%;
+    				border-collapse: collapse;
+
+					thead {
+						tr {
+							th {
+								&.column {
+									&-shortcode,
+									&-author,
+									&-date {
+										width: auto;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	p.submit {
