@@ -78,19 +78,33 @@ class UR_Admin_Export_Users {
 		$to_date       = isset( $_POST['to_date'] ) ? sanitize_text_field( wp_unslash( $_POST['to_date'] ) ) : '';
 		$export_format = isset( $_POST['export_format'] ) ? sanitize_text_field( wp_unslash( $_POST['export_format'] ) ) : 'csv';
 
-		$users = get_users(
-			array(
-				'ur_form_id' => $form_id,
-			)
-		);
+		$batch_size        = 1000;
+		$offset            = 0;
+		$total_users       = count_users();
+		$total_users_count = $total_users['total_users'];
+		$all_users         = array();
 
-		if ( count( $users ) === 0 ) {
+		while ( $offset < $total_users_count ) {
+			$args = array(
+				'number'     => $batch_size,
+				'offset'     => $offset,
+				'ur_form_id' => $form_id,
+			);
+
+			$users     = get_users( $args );
+			$all_users = array_merge( $all_users, $users );
+			$offset   += $batch_size;
+
+			sleep( 1 );
+		}
+
+		if ( count( $all_users ) === 0 ) {
 			echo '<div id="message" class="updated inline notice notice-error"><p><strong>' . esc_html__( 'No users found with this form id.', 'user-registration' ) . '</strong></p></div>';
 			return;
 		}
 
 		$columns   = $this->generate_columns( $form_id, $unchecked_fields, $checked_additional_fields );
-		$rows      = $this->generate_rows( $users, $form_id, $unchecked_fields, $checked_additional_fields, $from_date, $to_date );
+		$rows      = $this->generate_rows( $all_users, $form_id, $unchecked_fields, $checked_additional_fields, $from_date, $to_date );
 		$form_name = str_replace( ' &#8211; ', '-', get_the_title( $form_id ) ); //phpcs:ignore;
 		$form_name = str_replace( '&#8211;', '-', $form_name );
 		$form_name = strtolower( str_replace( ' ', '-', $form_name ) );
