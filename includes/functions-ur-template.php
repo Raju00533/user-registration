@@ -986,8 +986,11 @@ if ( ! function_exists( 'user_registration_form_data' ) ) {
 		$all_meta_value = get_user_meta( $user_id );
 		$user_details   = get_user_by( 'ID', $user_id );
 		$user_info      = (array) $user_details->data;
-		$fields         = array();
+		$allowed_user_roles = array( 'administrator' );
+		$current_user =  wp_get_current_user();
+		$is_admin = count(array_intersect($allowed_user_roles, (array) $current_user->roles )) > 0 ;
 
+		$fields         = array();
 		$post_content_array = ( $form_id ) ? UR()->form->get_form( $form_id, array( 'content_only' => true ) ) : array();
 
 		$all_meta_value_keys = array();
@@ -1004,8 +1007,9 @@ if ( ! function_exists( 'user_registration_form_data' ) ) {
 		 *
 		 * @param array $post_content_array The original post content array for the profile account.
 		 * @param int $form_id The ID of the user registration form associated with the account.
+		 * @param bool $is_admin Is the current logged in user admin
 		 */
-		$post_content_array = apply_filters( 'user_registration_profile_account_filter_all_fields', $post_content_array, $form_id );
+		$post_content_array = apply_filters( 'user_registration_profile_account_filter_all_fields', $post_content_array, $form_id , $is_admin );
 
 		foreach ( $post_content_array as $post_content_row ) {
 			foreach ( $post_content_row as $post_content_grid ) {
@@ -1027,7 +1031,14 @@ if ( ! function_exists( 'user_registration_form_data' ) ) {
 					$validate_message       = isset( $field->advance_setting->validation_message ) ? $field->advance_setting->validation_message : esc_html__( 'This field value needs to be unique.', 'user-registration' );
 					$enable_payment_slider  = isset( $field->advance_setting->enable_payment_slider ) ? $field->advance_setting->enable_payment_slider : false;
 					$enable_image_choice    = isset( $field->general_setting->image_choice ) ? $field->general_setting->image_choice : false;
+					$enable_image_choice    = isset( $field->general_setting->image_choice ) ? $field->general_setting->image_choice : false;
+					$default           = '';
 
+					if ( isset( $field->general_setting->default_value ) ) {
+						$default = $field->general_setting->default_value;
+					} elseif ( isset( $field->advance_setting->default_value ) ) {
+						$default = $field->advance_setting->default_value;
+					}
 					if ( empty( $field_label ) ) {
 						$field_label_array = explode( '_', $field_name );
 						$field_label       = join( ' ', array_map( 'ucwords', $field_label_array ) );
@@ -1101,6 +1112,9 @@ if ( ! function_exists( 'user_registration_form_data' ) ) {
 
 						$extra_params['default'] = isset( $all_meta_value[ 'user_registration_' . $field_name ][0] ) ? $all_meta_value[ 'user_registration_' . $field_name ][0] : ( isset( $all_meta_value[ $field_name ][0] ) ? $all_meta_value[ $field_name ][0] : '' );
 
+						if ( empty( $extra_params['default'] ) ) {
+							$extra_params['default'] = $default;
+						}
 
 						if ( empty( $extra_params['default'] ) ) {
 							$extra_params['default'] = isset( $user_info[ $field_name ] ) ? $user_info[ $field_name ] : '';
