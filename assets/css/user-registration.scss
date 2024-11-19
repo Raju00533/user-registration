@@ -1167,3 +1167,28 @@ span.ur-shortcode-form-embed-dot {
 			line-height: 15px;
 	 }
 }
+
+
+// Form CSS fix in responsive view
+.user-registration-page {
+	.user-registration {
+		&.ur-frontend-form {
+			.ur-form-row {
+				@media screen and (max-width: 600px) {
+					flex-direction: column;
+
+					.ur-form-grid {
+						&.ur-grid {
+							&-4,
+							&-3,
+							&-2,
+							&-1 {
+								width: 100% !important;
+							}
+						}
+					}
+				}				
+			}
+		}
+	}
+}
