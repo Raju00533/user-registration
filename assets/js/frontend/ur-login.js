@@ -1,4 +1,17 @@
 jQuery(function ($) {
+	var is_error = $(".user-registration-error");
+	if(is_error.length > 0) {
+		$this = $(".user-registration-error");
+		var targetDiv = $(".ur-login-error-message");
+		$this.addClass("new-error");
+		$this.wrapAll('<div class="user-registration-login-error"></div>');
+		$this.appendTo(targetDiv);
+		$this.find("svg").remove();
+		var message = $this.text();
+		$this.removeClass("user-registration-error");
+
+
+	}
 	$(".ur-frontend-form")
 		.find("form.login")
 		.each(function () {
@@ -105,11 +118,13 @@ jQuery(function ($) {
 
 								$this
 									.closest("#user-registration")
-									.prepend(
-										'<ul class="user-registration-error">' +
+									.find(".ur-login-error-message")
+									.html(
+										'<div class="user-registration-login-error"><ul class="user-login-error-content">' +
 											res.data.message +
-											"</ul>"
-									);
+											"</ul></div>"
+									)
+
 							} else {
 								if (res.data.status) {
 									$this

@@ -65,7 +65,7 @@ $is_passwordless_enabled = ! ur_is_passwordless_login_enabled() || ! isset( $_GE
  * @param function Print notice function.
  * @return function.
  */
-apply_filters( 'user_registration_login_form_before_notice', ur_print_notices() );
+// apply_filters( 'user_registration_login_form_before_notice', ur_print_notices() );
 ?>
 
 <?php
@@ -108,8 +108,19 @@ do_action( 'user_registration_before_customer_login_form' );
 						?>
 						<span class="input-wrapper">
 						<input placeholder="<?php echo esc_attr( $placeholders['username'] ); ?>" type="text" class="user-registration-Input user-registration-Input--text input-text" name="username" id="username" value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( sanitize_text_field( $_POST['username'] ) ) ) : ''; // phpcs:ignore ?>" style="<?php echo $enable_field_icon ? "padding-left: 32px !important" : '' ?>"/>
-						<?php if ( $enable_field_icon ) { ?>
-						<span class="ur-icon ur-icon-user"></span>
+						<span class="ur-login-error-message">
+							<?php
+							apply_filters( 'user_registration_login_form_before_notice', ur_print_notices() );
+
+							?>
+						</span>
+						<?php if (  $enable_field_icon ) { ?>
+						<span class="ur-icon ur-icon-user-new">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+  <path d="M2.33537 2.83301H11.6687C12.3104 2.83301 12.8354 3.35801 12.8354 3.99967V10.9997C12.8354 11.6413 12.3104 12.1663 11.6687 12.1663H2.33537C1.6937 12.1663 1.1687 11.6413 1.1687 10.9997V3.99967C1.1687 3.35801 1.6937 2.83301 2.33537 2.83301Z" stroke="#858585" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12.8356 4L7.00228 8.08333L1.16895 4" stroke="#858585" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+						</span>
 						<?php } ?>
 						</span>
 					</p>
@@ -133,7 +144,12 @@ do_action( 'user_registration_before_customer_login_form' );
 						}
 						?>
 						<?php if ( $enable_field_icon ) { ?>
-						<span class="ur-icon ur-icon-password"></span>
+						<span class="ur-icon ur-icon-password-new">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+  <path d="M11.0833 6.91797H2.91667C2.27233 6.91797 1.75 7.4403 1.75 8.08464V12.168C1.75 12.8123 2.27233 13.3346 2.91667 13.3346H11.0833C11.7277 13.3346 12.25 12.8123 12.25 12.168V8.08464C12.25 7.4403 11.7277 6.91797 11.0833 6.91797Z" stroke="#858585" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M4.08289 6.91772V4.58439C4.08289 3.81084 4.39018 3.06898 4.93716 2.522C5.48414 1.97502 6.226 1.66772 6.99955 1.66772C7.7731 1.66772 8.51497 1.97502 9.06195 2.522C9.60893 3.06898 9.91622 3.81084 9.91622 4.58439V6.91772" stroke="#858585" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+						</span>
 						<?php } ?>
 						</span>
 					</p>
@@ -154,10 +170,40 @@ do_action( 'user_registration_before_customer_login_form' );
 					<p class="form-row">
 						<?php wp_nonce_field( 'user-registration-login', 'user-registration-login-nonce' ); ?>
 						<div>
+						<div class="user-registration-login-extra-section">
+							<div class="ur-remember-me-section">
+								<?php
+								$remember_me_enabled = ur_option_checked( 'user_registration_login_options_remember_me', true );
+
+								if ( $remember_me_enabled && $is_passwordless_enabled ) {
+									?>
+									<label class="user-registration-form__label user-registration-form__label-for-checkbox inline">
+										<input class="user-registration-form__input user-registration-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php echo esc_html( $labels['remember_me'] ); ?></span>
+									</label>
+									<?php
+								}
+								?>
+							</div>
+							<div class="ur-lost-password-section">
+								<?php
+								$lost_password_enabled = ur_option_checked( 'user_registration_login_options_lost_password', true );
+
+								if ( $lost_password_enabled && $is_passwordless_enabled ) {
+									?>
+									<p class="user-registration-LostPassword lost_password">
+										<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php echo esc_html( $labels['lost_your_password'] ); ?></a>
+									</p>
+									<?php
+								}
+								?>
+							</div>
+
+						</div>
 						<?php
 						/**
 						 * Action to fire before rendering of submit button for user registration login form.
 						 */
+
 						do_action( 'user_registration_login_form_before_submit_button' );
 						?>
 							<?php if ( $enable_ajax ) { ?>
@@ -168,30 +214,8 @@ do_action( 'user_registration_before_customer_login_form' );
 							<?php } ?>
 						</div>
 						<input type="hidden" name="redirect" value="<?php echo isset( $redirect ) ? esc_attr( $redirect ) : esc_attr( the_permalink() ); ?>" />
-						<?php
-							$remember_me_enabled = ur_option_checked( 'user_registration_login_options_remember_me', true );
 
-						if ( $remember_me_enabled && $is_passwordless_enabled ) {
-							?>
-								<label class="user-registration-form__label user-registration-form__label-for-checkbox inline">
-									<input class="user-registration-form__input user-registration-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php echo esc_html( $labels['remember_me'] ); ?></span>
-								</label>
-							<?php
-						}
-						?>
 					</p>
-
-					<?php
-						$lost_password_enabled = ur_option_checked( 'user_registration_login_options_lost_password', true );
-
-					if ( $lost_password_enabled && $is_passwordless_enabled ) {
-						?>
-								<p class="user-registration-LostPassword lost_password">
-									<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php echo esc_html( $labels['lost_your_password'] ); ?></a>
-								</p>
-						<?php
-					}
-					?>
 
 					<?php
 					$users_can_register = ur_option_checked( 'users_can_register', true );

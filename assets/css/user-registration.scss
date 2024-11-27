@@ -83,7 +83,6 @@
 /**
 * Main User Registration styles
 */
-.user-registration-message,
 .user-registration-error,
 .user-registration-coupon-error,
 .user-registration-info {
@@ -132,11 +131,11 @@
 	}
 }
 
-.user-registration-message {
-	border-top-color: #8fae1b;
-	background: rgba(#8fae1b, 0.1);
-	color: darken(#8fae1b, 15%);
-}
+// .user-registration-message {
+// 	border-top-color: #8fae1b;
+// 	background: rgba(#8fae1b, 0.1);
+// 	color: darken(#8fae1b, 15%);
+// }
 
 .user-registration-info {
 	color: #1e85be;
@@ -173,14 +172,69 @@ input.ur-input-border-red, textarea.ur-input-border-red{
 	box-sizing: border-box;
 
 	&.login {
-		margin: 0;
-		padding: 10px;
-		box-shadow: none;
-		background: none;
+		border : none;
+		padding: 60px;
+		border-radius:8px;
+		background: #fff;
+		box-shadow: 0px 4px 16px 0px rgba(17, 17, 26, 0.05), 0px 8px 32px 0px rgba(17, 17, 26, 0.05);
+
+		.ur-lost-password-content-container{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			.ur-lost-password-title {
+				color: var(--Grey-grey-600, #1F1F1F);
+				font-size: 32px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 48px;
+				letter-spacing: 0.15px;
+				margin : auto;
+				margin-top : 20px;
+			}
+			.ur-lost-password-message{
+				font-size: 14px;
+				letter-spacing: 0.15px;
+				margin-top: 5px;
+			}
+		}
+		.ur-input-with-icon{
+			position: relative;
+			display: flex;
+			align-items: center;
+			.input-icon{
+				position: absolute;
+				left: 10px;
+				top: 50%;
+			}
+			input{
+				padding-left: 40px;
+			}
+		}
+		.required{
+			margin-left: 5px;
+		}
+		#user_login{
+			border-radius: 4px;
+			border: 1px solid #E9E9E9;
+			margin-top: -24px;
+		}
+		.ur-reset-password-btn{
+			border: 1px solid #475BB2;
+			background: #475BB2;
+			width: 100%;
+			color: #FFF;
+			letter-spacing: 0.15px;
+		}
+
+
+
 
 		input[name="rememberme"]#rememberme {
 			vertical-align: middle;
 		}
+
 	}
 
 	&.login-registration {
@@ -1166,4 +1220,75 @@ span.ur-shortcode-form-embed-dot {
 			min-height: 100px !important;
 			line-height: 15px;
 	 }
+}
+
+//Revamp design for message and error
+.ur-message-container {
+	border-radius: 8px;
+    box-shadow: 0px 4px 16px 0px rgba(17, 17, 26, 0.05), 0px 8px 32px 0px rgba(17, 17, 26, 0.05);
+    padding: 60px;
+
+	.user-registration-message{
+		position : relative;
+		padding : 10px ;
+		z-index : 9999;
+		display : flex;
+		align-items: center;
+		border-radius: 4px;
+		border-left : 4px solid #49C85F;
+		background: #F7FDF8;
+		border-top : none;
+		margin : 20px 0px;
+		padding-left : 40px ;
+	}
+
+	svg{
+		position: absolute;
+		z-index : 999999;
+		margin-top : 33px;
+		margin-left : 10px;
+	}
+
+
+
+}
+
+.user-registration-error{
+	position : absolute;
+	padding : 10px !important;
+	z-index : 9999;
+	display : flex;
+	align-items: center;
+	border-radius: 4px;
+	border-left : 4px solid $red;
+	background: 4px solid #FDE8E8;
+	border-top : none;
+	margin : 20px 0px;
+	width: 60%;
+	left: 20%;
+
+	&::before {
+		content: none;
+		display: none;
+	}
+
+	svg{
+		margin-right: 10px;
+	}
+
+}
+
+.user-registration-login-extra-section{
+	display : flex;
+	justify-content: space-between;
+
+	.user-registration-LostPassword{
+		color: #475BB2;
+	}
+}
+.user-registration-Button{
+	width : 100%;
+	background : #475BB2 !important;
+	border-radius: 4px !important;
+	border: 1px solid #475BB2 !important;
 }

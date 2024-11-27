@@ -4106,7 +4106,9 @@ if ( ! function_exists( 'ur_process_login' ) ) {
 				 *
 				 * @param string $message The original error message displayed on the login screen.
 				 */
+				echo '<div class="test">' ;
 				ur_add_notice( apply_filters( 'login_errors', $message ), 'error' );
+				echo '</div>';
 				/**
 				 * Triggered when a user fails to log in during the user registration process.
 				 */
