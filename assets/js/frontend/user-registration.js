@@ -2359,6 +2359,7 @@
 						}
 					});
 				}
+
 			});
 
 			$(".ur-frontend-form").each(function () {
@@ -2599,6 +2600,27 @@
 	});
 	$(window).on("user_registration_repeater_modified", function () {
 		user_registration_form_init();
+	});
+
+	$(document).on("click" ,"#login-registration--login,#login-registration--registration", function () {
+
+		var action = $(this).data("action");
+		if (action === "login" && ! $(this).hasClass('active')) {
+			$(this).addClass('active');
+			$("#login-registration--registration").removeClass('active');
+			$('.login-registration').find(".ur-login-form").removeClass('hidden');
+			$('.login-registration').find(".ur-registration-form").addClass('hidden');
+
+		}
+		if (action === "registration" && ! $(this).hasClass('active')) {
+			$(this).addClass('active');
+			$("#login-registration--login").removeClass('active');
+			$('.login-registration').find(".ur-login-form").addClass('hidden');
+			$('.login-registration').find(".ur-registration-form").removeClass('hidden');
+
+		}
+
+
 	});
 })(jQuery);
 

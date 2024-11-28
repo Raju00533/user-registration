@@ -1003,6 +1003,7 @@ input.ur-input-border-red, textarea.ur-input-border-red{
 			left: 0;
 			transform: translateY(-50%);
 		}
+
 	}
 }
 /* For shortcode embed */
@@ -1291,4 +1292,62 @@ span.ur-shortcode-form-embed-dot {
 	background : #475BB2 !important;
 	border-radius: 4px !important;
 	border: 1px solid #475BB2 !important;
+}
+
+.ur-login-registration-nav {
+	width: 100%;
+
+	ul {
+	  display: flex;
+	  list-style-type: none;
+	  margin: 0;
+	  padding: 0;
+	  width: 100%;
+
+	  li {
+		flex: 1;
+		text-align: center;
+		padding: 15px 0;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		color: #C5C5C5;
+		font-weight: 500;
+		border-radius: 8px 0 0 0;
+		border-top: 1px solid #F1F1F1;
+		background: #F9F9F9;
+		box-shadow: 0px 4px 16px 0px rgba(17, 17, 26, 0.05), 0px 8px 32px 0px rgba(17, 17, 26, 0.05);
+		clip-path: inset(0px -1px -1px -1px);
+		&:first-child {
+		  border-radius: 8px 0px 0 0;
+		  border-top: 1px solid #F1F1F1;
+		 margin-left : 10px
+		}
+
+		&:last-child {
+		  border-radius: 0 8px 0px 0;
+		  margin-right: 10px;
+		}
+
+		&.active {
+		   background: #fff;
+		  color : #1F1F1F;
+		  border-top: 1px solid #F1F1F1;
+
+		}
+
+	  }
+	}
+  }
+
+  .login-registration{
+	.hidden {
+		display : none;
+	}
+  }
+
+.ur-field-item{
+	.user-registration-error{
+		width : 100% ;
+		position: unset ;
+	}
 }
