@@ -10,6 +10,8 @@
 @import "variables/variables";
 @import "mixins/mixins";
 @import "fonts";
+@import "animation";
+
 
 // Components
 @import "components/button", "components/modal";
@@ -146,7 +148,6 @@
 	border-top-color: $red !important;
 	background: rgba($red, 0.1) !important;
 	color: darken($red, 15%) !important;
-
 	&::before {
 		content: "\f534";
 	}
@@ -352,6 +353,7 @@ input.ur-input-border-red, textarea.ur-input-border-red{
 			input[type="password"] {
 				display: inline;
 				margin-bottom: 0px;
+
 			}
 
 			.StripeElement {
@@ -740,6 +742,13 @@ input.ur-input-border-red, textarea.ur-input-border-red{
 
 	#ur-submit-message-node {
 		margin: 20px 0 0 0;
+		//Revamp design for message and error
+		&.user-registration-error {
+			position : unset;
+			margin-bottom : 10px;
+			width: 100%;
+
+		}
 
 		&.ur-error {
 			background: rgba(206, 0, 0, 0.1);
@@ -1264,13 +1273,13 @@ span.ur-shortcode-form-embed-dot {
 	border-left : 4px solid $red;
 	background: 4px solid #FDE8E8;
 	border-top : none;
-	margin : 20px 0px;
-	width: 60%;
-	left: 20%;
+	margin-left : 65px !important;
+	margin-right : 125px !important;
+	width: 72%;
 
 	&::before {
-		content: none;
-		display: none;
+		content: '';
+		display: '';
 	}
 
 	svg{
@@ -1287,13 +1296,28 @@ span.ur-shortcode-form-embed-dot {
 		color: #475BB2;
 	}
 }
-.user-registration-Button{
+// Spinner moved inside login and register button.
+.user-registration-Button,
+.ur-submit-button {
 	width : 100%;
 	background : #475BB2 !important;
 	border-radius: 4px !important;
 	border: 1px solid #475BB2 !important;
-}
 
+	.ur-spinner{
+		width: 16px;
+		height: 16px;
+		margin-left: 6px;
+		margin-bottom: 2px;
+		display: inline-block;
+		vertical-align: middle;
+		@include loader();
+		margin-top : 5px;
+		float : right;
+
+	}
+}
+// Login - Registration  shortcode design.
 .ur-login-registration-nav {
 	width: 100%;
 
@@ -1339,15 +1363,72 @@ span.ur-shortcode-form-embed-dot {
 	}
   }
 
-  .login-registration{
+.login-registration{
 	.hidden {
 		display : none;
 	}
   }
-
+// Revamp error design for registration and login form
 .ur-field-item{
+
+	input{
+		border-radius : 4px !important;
+	}
 	.user-registration-error{
 		width : 100% ;
-		position: unset ;
+		position: unset  ;
+		letter-spacing: 0.18px;
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 19px;
+		padding : 0px !important; //Overriding global error padding.
+		border: none !important; //Overriding global error border.
+		background:  transparent !important; //Overriding global error background.
+		margin-left : unset !important; //Overriding global error margin.
+
+		&::before {
+			content: "\f534" ;
+			color : #FF0000 ;
+
+		}
 	}
+
+}
+
+
+.user-registration.ur-frontend-form {
+	background: #FFF;
+	border-radius: 8px;
+	box-shadow: 0px 4px 16px 0px rgba(17, 17, 26, 0.05), 0px 8px 32px 0px rgba(17, 17, 26, 0.05);
+	padding : 60px;
+
+	input{
+		border-radius : 4px;
+	}
+	#user_email {
+		&::before {
+		  content: "\f348";
+		 display: inline-block;
+		 vertical-align: middle;
+		 font-family: "Dashicon	s";
+		 font-size: calc(100% + 10px);
+		 margin-right: 0.875rem;
+		}
+	}
+}
+.ur-icon-user{
+	margin-right: 0.875rem;
+	&::before {
+		content: "\f465";
+		display: inline-block;
+		vertical-align: middle;
+		font-family: "Dashicons";
+	}
+}
+.ur-registration-icon {
+	position: relative;
+	top: 50%;
+	padding: 8px;
+	left: 0;
+	transform: translateY(-50%);
 }

@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// if ( function_exists( 'ur_print_notices' ) ) {
-// 	ur_print_notices();
-// }
+if ( function_exists( 'ur_print_notices' ) ) {
+	ur_print_notices();
+}
 /**
  * My Account navigation.
  */
@@ -32,6 +32,6 @@ do_action( 'user_registration_account_navigation' ); ?>
 		/**
 		 * My Account content.
 		 */
-		// do_action( 'user_registration_account_content' );
+		do_action( 'user_registration_account_content' );
 	?>
 </div>

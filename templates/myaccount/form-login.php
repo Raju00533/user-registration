@@ -65,7 +65,7 @@ $is_passwordless_enabled = ! ur_is_passwordless_login_enabled() || ! isset( $_GE
  * @param function Print notice function.
  * @return function.
  */
-// apply_filters( 'user_registration_login_form_before_notice', ur_print_notices() );
+apply_filters( 'user_registration_login_form_before_notice', ur_print_notices() );
 ?>
 
 <?php
@@ -108,18 +108,10 @@ do_action( 'user_registration_before_customer_login_form' );
 						?>
 						<span class="input-wrapper">
 						<input placeholder="<?php echo esc_attr( $placeholders['username'] ); ?>" type="text" class="user-registration-Input user-registration-Input--text input-text" name="username" id="username" value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( sanitize_text_field( $_POST['username'] ) ) ) : ''; // phpcs:ignore ?>" style="<?php echo $enable_field_icon ? "padding-left: 32px !important" : '' ?>"/>
-						<span class="ur-login-error-message">
-							<?php
-							apply_filters( 'user_registration_login_form_before_notice', ur_print_notices() );
-
-							?>
-						</span>
+						<span id="ur-login-error-message ur-field-item"></span>
 						<?php if (  $enable_field_icon ) { ?>
-						<span class="ur-icon ur-icon-user-new">
-						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
-  <path d="M2.33537 2.83301H11.6687C12.3104 2.83301 12.8354 3.35801 12.8354 3.99967V10.9997C12.8354 11.6413 12.3104 12.1663 11.6687 12.1663H2.33537C1.6937 12.1663 1.1687 11.6413 1.1687 10.9997V3.99967C1.1687 3.35801 1.6937 2.83301 2.33537 2.83301Z" stroke="#858585" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M12.8356 4L7.00228 8.08333L1.16895 4" stroke="#858585" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+						<span class="ur-icon ur-icon-user">
+
 						</span>
 						<?php } ?>
 						</span>
