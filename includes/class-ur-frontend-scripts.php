@@ -46,6 +46,10 @@ class UR_Frontend_Scripts {
 		add_action( 'before-user-registration-my-account-shortcode', array( __CLASS__, 'load_my_account_scripts' ) );
 		add_action( 'wp_print_scripts', array( __CLASS__, 'localize_printed_scripts' ), 5 );
 		add_action( 'wp_print_footer_scripts', array( __CLASS__, 'localize_printed_scripts' ), 5 );
+		//Add login/logout  menu if  not page menu
+		add_filter( 'wp_nav_menu_objects' , array( __CLASS__,'ur_add_login_logout_menu') ,10 , 2 );
+		//Add login/logout  menu if page menu (for default menu)
+		add_filter( 'wp_page_menu_args' , array( __CLASS__,'ur_add_login_logout_default_menu') ,10 , 2 );
 	}
 
 	/**
@@ -568,6 +572,70 @@ class UR_Frontend_Scripts {
 		$custom_params['hint'] = esc_html__( $hint, 'user-registration' );
 
 		return $custom_params;
+	}
+
+	public static function ur_add_login_logout_menu($items , $args){
+		$is_login_logout_enabled = ur_option_checked( 'user_registration_form_setting_enable_login_logout_menu', false );
+		if( $is_login_logout_enabled ){
+		$class = isset( $item->classes[0] ) ? $item->classes[0] : array(
+			'menu-item',
+			'menu-item-type-custom',
+			'menu-item-object-custom',
+		);
+		$is_user_logged_in = is_user_logged_in();
+		if ( $is_user_logged_in ) {
+			$url = wp_logout_url( ur_get_my_account_url() );
+			$title = __( 'Logout', 'user-registration' );
+		}else{
+			$url =  ur_get_my_account_url();
+			$title = __( 'Login', 'user-registration' );
+		}
+		$args = apply_filters('user_registration_login_logout_menu_args', array(
+			'title' => $title,
+			'url' => $url,
+			'menu_order' => count($items) + 1,
+			'ID' => 999999,
+			'object_id' => 999999,
+			'object' => 'custom',
+			'type' => 'custom',
+			'parent' => 0,
+			'menu_item_parent' => 0,
+			'classes' => array(),
+			'target' => '',
+			'attr_title' => '',
+			'description' => '',
+			'xfn' => '',
+			'status' => '',
+			'db_id' => 999999,
+			'current' => false,
+			'classes' => $class,
+			'category_post' => '',
+			'nolink ' => '',
+			'template' => '',
+			'mega_template ' => '',
+			'mega_template ' => '',
+
+		));
+		$items[] = (object) $args;
+	}
+
+	return $items;
+	}
+
+	public static function ur_add_login_logout_default_menu( $args ){
+
+		$is_login_logout_enabled = ur_option_checked( 'user_registration_form_setting_enable_login_logout_menu', false );
+		if( ! $is_login_logout_enabled ){
+			return $args;
+		}
+
+		if( ! is_user_logged_in() ){
+			$args['after'] = '<li class="page_item page-item-99999 menu-item"><a class="menu-link" href="' . esc_url(wp_logout_url()) . '">'.__('Logout' , 'user-registration').'</a></li>';
+
+		}else{
+			$args['after'] = '<li class="page_item page-item-99999 menu-item"><a class="menu-link" href="' . esc_url(wp_login_url()) . '">'.__('Login','user-registration').'</a></li>';
+		}
+		return $args;
 	}
 }
 

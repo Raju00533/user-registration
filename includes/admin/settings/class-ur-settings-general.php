@@ -107,6 +107,15 @@ if ( ! class_exists( 'UR_Settings_General' ) ) :
 									'css'      => 'min-width: 350px;',
 									'default'  => 'no',
 								),
+								array(
+									'title'    => __( 'Add Login/Logout Menu', 'user-registration' ),
+									'desc'     => __( 'Add a login/logout menu according to user state', 'user-registration' ),
+									'id'       => 'user_registration_form_setting_enable_login_logout_menu',
+									'type'     => 'toggle',
+									'desc_tip' => true,
+									'css'      => 'min-width: 350px;',
+									'default'  => 'no',
+								)
 							),
 						),
 						'my_account_options' => array(
