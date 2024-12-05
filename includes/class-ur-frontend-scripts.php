@@ -50,6 +50,10 @@ class UR_Frontend_Scripts {
 		add_filter( 'wp_nav_menu_objects' , array( __CLASS__,'ur_add_login_logout_menu') ,10 , 2 );
 		//Add login/logout  menu if page menu (for default menu)
 		add_filter( 'wp_page_menu_args' , array( __CLASS__,'ur_add_login_logout_default_menu') ,10 , 2 );
+		//For block based editor.
+		if (wp_is_block_theme()) {
+			add_filter('render_block', array(__CLASS__, 'ur_add_login_logout_block_menu'), 10, 2);
+		}
 	}
 
 	/**
@@ -574,6 +578,14 @@ class UR_Frontend_Scripts {
 		return $custom_params;
 	}
 
+	/**
+	 * Add login/logout menu to the menu items.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param   $items
+	 * @param   $args
+	 */
 	public static function ur_add_login_logout_menu($items , $args){
 		$is_login_logout_enabled = ur_option_checked( 'user_registration_form_setting_enable_login_logout_menu', false );
 		if( $is_login_logout_enabled ){
@@ -622,6 +634,13 @@ class UR_Frontend_Scripts {
 	return $items;
 	}
 
+	/**
+	 * Add login/logout menu to the default menu.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param  $args
+	 */
 	public static function ur_add_login_logout_default_menu( $args ){
 
 		$is_login_logout_enabled = ur_option_checked( 'user_registration_form_setting_enable_login_logout_menu', false );
@@ -636,6 +655,34 @@ class UR_Frontend_Scripts {
 			$args['after'] = '<li class="page_item page-item-99999 menu-item"><a class="menu-link" href="' . esc_url(wp_login_url()) . '">'.__('Login','user-registration').'</a></li>';
 		}
 		return $args;
+	}
+	/**
+	 * Add login/logout menu to the block based editor.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param  $block_content
+	 * @param  $block
+	 */
+
+	public static function ur_add_login_logout_block_menu( $block_content, $block ){
+		if ($block['blockName'] === 'core/navigation') {
+			if (is_user_logged_in()) {
+				$logout_url = wp_logout_url( ur_get_my_account_url() );
+				$navigation_link_html  = '<li class="wp-block-navigation-item"><a href="' . esc_url($logout_url) . '">'.__('Logout' , 'user-registration').'</a></li>';
+			} else {
+				$login_url = ur_get_my_account_url();
+				$navigation_link_html  = '<li class="wp-block-navigation-item"><a href="' . esc_url($login_url) . '">'.__('Login', 'user-registration').'</a></li>';
+			}
+
+			$block_content = preg_replace(
+				'/<\/ul>/i',
+				'</ul>' . $navigation_link_html,
+				$block_content,
+				1
+			);
+		}
+		return $block_content;
 	}
 }
 
