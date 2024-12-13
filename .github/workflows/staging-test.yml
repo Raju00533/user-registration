@@ -1,4 +1,4 @@
-name: UR Staging Test
+name: UR Staging qa Test
 
 on:
     push:
