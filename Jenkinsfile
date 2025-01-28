@@ -4,7 +4,7 @@ pipeline {
         SERVER_IP = credentials('QA_AUTOMATION_SERVER_IP')
         SERVER_USERNAME = credentials('QA_AUTOMATION_SERVER_USERNAME')
         SERVER_PASSWORD = credentials('QA_AUTOMATION_SERVER_PASS')
-        TEAMS_CHANNEL_EMAIL = '' // Replace with your Teams channel email
+        TEAMS_CHANNEL_EMAIL = credentials('TEAMS_CHANNEL_EMAIL')
     }
     stages {
         stage('Setup GitHub Credentials') {
