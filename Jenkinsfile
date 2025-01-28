@@ -60,6 +60,9 @@ pipeline {
             }
         }
         stage('Upload Plugin and Activate') {
+
+			//upload plugin inside container using docker command after copying it into the server directory
+			
             steps {
                 script {
                     sh '''
@@ -80,11 +83,11 @@ pipeline {
                         mkdir -p python-code
                         cd python-code
                         git init
-                        git remote add origin git@github.com:wpeverest/EVF-Automation.git
-                        git pull origin test-evf-free
+                        git remote add origin git@github.com:wpeverest/ur-Automation.git
+                        git pull origin test-ur-free
                         pip install -r requirements.txt
-                        chmod +x test_evf_free.sh
-                        bash ./test_evf_free.sh
+                        chmod +x test_ur_free.sh
+                        bash ./test_ur_free.sh
                     '''
                 }
             }
@@ -93,9 +96,9 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        mkdir -p /home/master/applications/ycrdmckpsu/public_html/evftest/reports/
-                        rm -rf /home/master/applications/ycrdmckpsu/public_html/evftest/reports/*
-                        scp -o StrictHostKeyChecking=no -r python-code/results/* ${SERVER_USERNAME}@${SERVER_IP}:/home/master/applications/ycrdmckpsu/public_html/evftest/reports/
+                        mkdir -p /home/master/applications/ycrdmckpsu/public_html/urtest/reports/
+                        rm -rf /home/master/applications/ycrdmckpsu/public_html/urtest/reports/*
+                        scp -o StrictHostKeyChecking=no -r python-code/results/* ${SERVER_USERNAME}@${SERVER_IP}:/var/www/html/reports/
                     '''
                 }
             }
@@ -104,13 +107,13 @@ pipeline {
     post {
         success {
             emailext(
-                subject: "EVF QA Automation - Job Successful",
+                subject: "ur QA Automation - Job Successful",
                 body: """
-                <p>The EVF QA Automation job completed successfully.</p>
+                <p>The ur QA Automation job completed successfully.</p>
                 <p>Here are the details:</p>
                 <ul>
-                    <li><b>Test Report:</b> <a href="https://qatest.wptests.net/evftest/reports/report.html">View Report</a></li>
-                    <li><b>Plugin ZIP:</b> <a href="https://qatest.wptests.net/evftest/reports/plugin.zip">Download Plugin</a></li>
+                    <li><b>Test Report:</b> <a href="https://qatest.wptests.net/urtest/reports/report.html">View Report</a></li>
+                    <li><b>Plugin ZIP:</b> <a href="https://qatest.wptests.net/urtest/reports/plugin.zip">Download Plugin</a></li>
                 </ul>
                 """,
                 to: "${TEAMS_CHANNEL_EMAIL}",
@@ -119,9 +122,9 @@ pipeline {
         }
         failure {
             emailext(
-                subject: "EVF QA Automation - Job Failed",
+                subject: "UR QA Automation - Job Failed",
                 body: """
-                <p>The EVF QA Automation job failed.</p>
+                <p>The UR QA Automation job failed.</p>
                 <p>Please check the Jenkins logs for more details.</p>
                 """,
                 to: "${TEAMS_CHANNEL_EMAIL}",
